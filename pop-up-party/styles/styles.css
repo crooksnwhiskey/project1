@@ -1,0 +1,13 @@
+body {
+    margin: auto;
+    padding: 0;
+    height: auto;
+    background-color: #419191;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-screen {
+    background-color: #419191;
+}
