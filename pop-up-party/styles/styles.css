@@ -11,3 +11,17 @@ body {
 .title-screen {
     background-color: #419191;
 }
+
+#play-button {
+    background-color: #ff6e2b;
+    border: 5px solid;
+    border-color: #ff6e2b #ff9f6b #ff9f6b #ff6e2b;
+    padding: 10px 20px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#play-button:active {
+    border-color: #000000#ff6e2b#ff6e2b#000000;
+}

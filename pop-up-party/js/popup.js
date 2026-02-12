@@ -10,7 +10,8 @@ startButton.addEventListener("click", () => {
 function startGame() {
     const title = document.querySelector(".title-screen");
     const game = document.querySelector(".game-screen");
-
     title.style.display = "none";
     game.style.display = "block";
+
+
 }
