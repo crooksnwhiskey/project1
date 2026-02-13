@@ -25,3 +25,7 @@ body {
 #play-button:active {
     border-color: #000000#ff6e2b#ff6e2b#000000;
 }
+
+#user {
+    cursor: none;
+}
