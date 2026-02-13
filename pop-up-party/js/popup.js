@@ -13,22 +13,47 @@ function startGame() {
     title.style.display = "none";
     game.style.display = "block";
 
-    createBox()
+    createRink()
+    createPuck()
 }
-function createBox() {
-    const box = document.createElement("div");
+function createRink() {
+    const rink = document.createElement("div");
 
-    box.id = "test";
+    rink.id = "rink";
 
-    box.style.width = "100px"
-    box.style.height = "100px"
-    box.style.position = "absolute"
-    box.style.top = "100px"
-    box.style.left = "100px"
-    box.style.backgroundColor = "white"
+    rink.style.width = "450px"
+    rink.style.height = "650px"
+    rink.style.position = "relative"
+    rink.style.borderRadius = "70px"
+    rink.style.border = "10px solid #3d4dff"
+
+    rink.style.backgroundColor = "#b8e2e1"
 
     const game = document.querySelector(".game-screen");
-    game.appendChild(box);
+    game.appendChild(rink);
+}
+
+let puckX;
+let puckY;
+const puck = {
+
+    startX: 225,
+    startY: 325,
+    speed: 3,
+    radius: 10
+
+};
+function createPuck() {
+    const puck = document.createElement("div");
+    puck.id = "puck";
+
+    puck.style.width = "75px"
+    puck.style.height = "75px"
+    puck.style.backgroundColor = "#000000"
+    puck.style.borderRadius = "50%"
+    puck.style.position = "absoute"
 
 
+    const rink = document.getElementById("rink");
+    rink.appendChild(puck);
 }
