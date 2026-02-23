@@ -51,9 +51,11 @@ const puck = {
 
     x: 225,
     y: 325,
-    speed: 3,
+    speedX: 0,
+    speedY: 0,
     velocity: 3,
     width: 75,
+    height: 75,
     radius: 10
 
 };
@@ -79,19 +81,31 @@ function movePuck() {
     const maxWidth = rink.clientWidth - puck.width;
     const maxHeight = rink.clientHeight - puck.width;
 
-    puck.x += puck.speed;
-    puck.y += puck.speed;
+    puck.x += puck.speedX;
+    puck.y += puck.speedY;
 
-    if (puck.x <= 0 || puck.x >= maxWidth) {
-        puck.speed = puck.speed * -1;
 
+    if (puck.x <= 0) {
+        puck.x = 0;
+        puck.speedX *= -1;
     }
-    if (puck.y <= 0 || puck.y >= maxHeight) {
-        puck.speed = puck.speed * -1;
+    else if (puck.x >= maxWidth) {
+        puck.x = maxWidth;
+        puck.speedX *= -1;
+    }
+
+
+    if (puck.y <= 0) {
+        puck.y = 0;
+        puck.speedY *= -1;
+    }
+    else if (puck.y >= maxHeight) {
+        puck.y = maxHeight;
+        puck.speedY *= -1;
     }
     if (puckObject) {
-        puckObject.style.left = puck.x + "px"
-        puckObject.style.top = puck.y + "px"
+        puckObject.style.left = puck.x + "px";
+        puckObject.style.top = puck.y + "px";
     }
 }
 const userObject = {
@@ -111,7 +125,7 @@ function createUser() {
     user.style.top = "350px";
     user.style.left = "150px";
     user.style.position = "absolute";
-    //user.style.pointerEvents = "none";
+    user.style.pointerEvents = "none";
     user.addEventListener("mousemove", userMove)
 
     const rink = document.getElementById("rink");
@@ -134,9 +148,11 @@ function draw() {
     const maxY = rink.height - 120;
     user.style.left = constrain(mouseX - 50, 0, maxX) + "px";
     user.style.top = constrain(mouseY - 50, 0, maxY) + "px";
-
-
+    puck.speedX *= 0.98;
+    puck.speedY *= 0.98;
+    collisions();
     movePuck();
+
     window.requestAnimationFrame(draw);
 }
 function rinkMove(event) {
@@ -144,4 +160,19 @@ function rinkMove(event) {
     // console.log(rink.x)
     mouseX = event.clientX - rink.x
     mouseY = event.clientY - rink.y
+}
+
+function collisions() { //https://youtu.be/_MyPLZSGS3s
+    let uX = parseInt(user.style.left)
+    let uY = parseInt(user.style.top)
+
+    if (uX < puck.x + puck.width && uX + 100 > puck.x
+        && uY < puck.y + 75 && uY + 100 > puck.y
+        && uY + 100 > puck.y) {
+
+    }
+    // to get the angle at which the puck makes contact and has to go we need the centers.
+
+
+
 }
