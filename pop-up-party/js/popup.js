@@ -9,16 +9,24 @@ startButton.addEventListener("click", () => {
     startGame();
 });
 
+//making constrain function because my previous code to constrain thing burnt an image into my screen
+function constrain(value, low, high) {
+    return Math.min(Math.max(value, low), high);
+}
+
 function startGame() {
     const title = document.querySelector(".title-screen");
     const game = document.querySelector(".game-screen");
+    const rink = document.getElementById("rink");
+
     title.style.display = "none";
     game.style.display = "block";
     window.requestAnimationFrame(draw)
 
-    createRink()
-    createPuck()
-    createUser()
+    createRink();
+    createPuck();
+    createUser();
+
 }
 function createRink() {
     const rink = document.createElement("div");
@@ -37,32 +45,55 @@ function createRink() {
     game.appendChild(rink);
 }
 
-let puckX;
-let puckY;
+
+
 const puck = {
 
-    startX: 225,
-    startY: 325,
+    x: 225,
+    y: 325,
     speed: 3,
+    velocity: 3,
+    width: 75,
     radius: 10
 
 };
-function createPuck() {
-    const puck = document.createElement("div");
-    puck.id = "puck";
+let puckObject;
 
-    puck.style.width = "75px"
-    puck.style.height = "75px"
-    puck.style.backgroundColor = "#000000"
-    puck.style.borderRadius = "50%"
-    puck.style.position = "absolute"
+function createPuck() {
+    puckObject = document.createElement("div");
+    puckObject.id = "puck";
+
+    puckObject.style.width = "75px"
+    puckObject.style.height = "75px"
+    puckObject.style.backgroundColor = "#000000"
+    puckObject.style.borderRadius = "50%"
+    puckObject.style.position = "absolute"
 
 
     const rink = document.getElementById("rink");
-    rink.appendChild(puck);
+    rink.appendChild(puckObject);
     rink.addEventListener("mousemove", rinkMove)
 }
+function movePuck() {
+    const rink = document.getElementById("rink");
+    const maxWidth = rink.clientWidth - puck.width;
+    const maxHeight = rink.clientHeight - puck.width;
 
+    puck.x += puck.speed;
+    puck.y += puck.speed;
+
+    if (puck.x <= 0 || puck.x >= maxWidth) {
+        puck.speed = puck.speed * -1;
+
+    }
+    if (puck.y <= 0 || puck.y >= maxHeight) {
+        puck.speed = puck.speed * -1;
+    }
+    if (puckObject) {
+        puckObject.style.left = puck.x + "px"
+        puckObject.style.top = puck.y + "px"
+    }
+}
 const userObject = {
     radius: 15,
     isMoving: false
@@ -80,6 +111,7 @@ function createUser() {
     user.style.top = "350px";
     user.style.left = "150px";
     user.style.position = "absolute";
+    //user.style.pointerEvents = "none";
     user.addEventListener("mousemove", userMove)
 
     const rink = document.getElementById("rink");
@@ -97,35 +129,15 @@ function draw() {
     // console.log(userObject.isMoving)
 
     const rink = document.getElementById("rink").getBoundingClientRect();
-    //!(parseInt(user.style.left) < 0) ||
-    if (!((parseInt(user.style.left)) > (rink.width - 100)) && !(parseInt(user.style.left) < 0)) {
-        if (userObject.isMoving === true) {
-            user.style.left = (mouseX - 50) + "px"
-        }
 
-    }
-    else if (parseInt(user.style.left) < 0) {
-        user.style.left = 0 + "px"
-    }
-    else {
-        user.style.left = rink.width - 120 + "px"
+    const maxX = rink.width - 120;
+    const maxY = rink.height - 120;
+    user.style.left = constrain(mouseX - 50, 0, maxX) + "px";
+    user.style.top = constrain(mouseY - 50, 0, maxY) + "px";
 
-    }
-    if (!((parseInt(user.style.top)) > (rink.height - 100)) && !(parseInt(user.style.top) < 0)) {
-        if (userObject.isMoving === true) {
-            user.style.top = (mouseY - 30) + "px"
-        }
 
-    }
-    else if (parseInt(user.style.top) < 0) {
-        user.style.top = 0 + "px"
-    }
-    else {
-        user.style.top = rink.height - 110 + "px"
-
-    }
-
-    window.requestAnimationFrame(draw)
+    movePuck();
+    window.requestAnimationFrame(draw);
 }
 function rinkMove(event) {
     const rink = document.getElementById("rink").getBoundingClientRect();
