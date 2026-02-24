@@ -4,6 +4,9 @@ const startButton = document.getElementById("play-button");
 const titleScreen = document.getElementById("title");
 let mouseX = 0
 let mouseY = 0
+let score = 0
+let scoreElement;
+
 
 startButton.addEventListener("click", () => {
     startGame();
@@ -26,7 +29,7 @@ function startGame() {
     createRink();
     createPuck();
     createUser();
-
+    createScore();
 }
 function createRink() {
     const rink = document.createElement("div");
@@ -50,12 +53,12 @@ function createRink() {
 const puck = {
 
     x: 225,
-    y: 325,
-    speedX: 0,
-    speedY: 0,
+    y: 100,
+    speedX: 4,
+    speedY: 4,
     velocity: 3,
-    width: 75,
-    height: 75,
+    width: 15,
+    height: 15,
     radius: 10
 
 };
@@ -65,8 +68,8 @@ function createPuck() {
     puckObject = document.createElement("div");
     puckObject.id = "puck";
 
-    puckObject.style.width = "75px"
-    puckObject.style.height = "75px"
+    puckObject.style.width = "15px"
+    puckObject.style.height = "15px"
     puckObject.style.backgroundColor = "#000000"
     puckObject.style.borderRadius = "50%"
     puckObject.style.position = "absolute"
@@ -79,7 +82,7 @@ function createPuck() {
 function movePuck() {
     const rink = document.getElementById("rink");
     const maxWidth = rink.clientWidth - puck.width;
-    const maxHeight = rink.clientHeight - puck.width;
+    const maxHeight = rink.clientHeight - puck.height;
 
     puck.x += puck.speedX;
     puck.y += puck.speedY;
@@ -100,8 +103,10 @@ function movePuck() {
         puck.speedY *= -1;
     }
     else if (puck.y >= maxHeight) {
-        puck.y = maxHeight;
-        puck.speedY *= -1;
+        puck.x = Math.random() * maxWidth;
+        puck.y = 10
+        score = 0;
+        scoreElement.innerText = "Score: " + score;
     }
     if (puckObject) {
         puckObject.style.left = puck.x + "px";
@@ -119,9 +124,9 @@ function createUser() {
     user.id = "user";
 
     user.style.width = '100px'
-    user.style.height = '100px'
+    user.style.height = '20px'
     user.style.backgroundColor = '#b30000'
-    user.style.borderRadius = "50%";
+    user.style.borderRadius = "5%";
     user.style.top = "350px";
     user.style.left = "150px";
     user.style.position = "absolute";
@@ -145,13 +150,15 @@ function draw() {
     const rink = document.getElementById("rink").getBoundingClientRect();
 
     const maxX = rink.width - 120;
-    const maxY = rink.height - 120;
+    // const maxY = rink.height - 120;
     user.style.left = constrain(mouseX - 50, 0, maxX) + "px";
-    user.style.top = constrain(mouseY - 50, 0, maxY) + "px";
-    puck.speedX *= 0.98;
-    puck.speedY *= 0.98;
-    collisions();
+    // user.style.top = constrain(mouseY - 50, 0, maxY) + "px";
+    // puck.speedX *= 0.98;
+    // puck.speedY *= 0.98;
+    user.style.top = "600px"
     movePuck();
+    collisions();
+
 
     window.requestAnimationFrame(draw);
 }
@@ -166,13 +173,34 @@ function collisions() { //https://youtu.be/_MyPLZSGS3s
     let uX = parseInt(user.style.left)
     let uY = parseInt(user.style.top)
 
-    if (uX < puck.x + puck.width && uX + 100 > puck.x
-        && uY < puck.y + 75 && uY + 100 > puck.y
-        && uY + 100 > puck.y) {
+    if (uX + 100 > puck.x && uX < puck.x + puck.width
+        && uY + 20 > puck.y && uY < puck.y + puck.height
+        && uY > puck.y) {
+        puck.speedY *= -1;
+        puck.y -= 5
 
+        score += 1;
+        scoreElement.innerText = "Score: " + score;
     }
+
     // to get the angle at which the puck makes contact and has to go we need the centers.
 
+    // let userCenterX = parseInt(user.style.left) + 50;
+    // let userCenterY = parseInt(user.style.top) + 10;
+    // let puckCenterX = puck.x + (puck.width / 2);
+    // let puckCenterY = puck.y + (puck.height / 2);
 
 
+    //https://youtu.be/rtBCVe3j_24  
+
+}
+function createScore() {
+    scoreElement = document.createElement("div");
+    scoreElement.id = "score";
+    scoreElement.style.position = "absolute";
+    scoreElement.style.top = "20px";
+    scoreElement.style.left = "20px";
+    scoreElement.innerText = "Score: 0";
+    const game = document.querySelector(".game-screen");
+    game.appendChild(scoreElement);
 }
