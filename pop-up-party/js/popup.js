@@ -1,11 +1,17 @@
 
-
 const startButton = document.getElementById("play-button");
 const titleScreen = document.getElementById("title");
 let mouseX = 0
 let mouseY = 0
 let score = 0
+let popUp = false
 let scoreElement;
+let popUpImg = null
+function preload() {
+    // preloads a image, kinda useless sense we do it anyways but just incase
+    popUpImg = new Image();
+    popUpImg.src = "Images/popup.png";
+}
 
 
 startButton.addEventListener("click", () => {
@@ -15,6 +21,27 @@ startButton.addEventListener("click", () => {
 //making constrain function because my previous code to constrain thing burnt an image into my screen
 function constrain(value, low, high) {
     return Math.min(Math.max(value, low), high);
+}
+
+function showPopUp() {
+    // a check so nothing is messed up
+    if (popUp !== true) return;
+    // just a check to make sure everything is ready and the image is real
+    if (!popUpImg) preload();
+    //setting up this image,
+    popUpImg.style.position = "absolute";
+    popUpImg.style.top = "200px"; //locational stuff! took me abit to find the sweet spot
+    popUpImg.style.left = "125px";
+    popUpImg.style.zIndex = "100";
+
+    //a click event to destroy the popup when the time comes
+    popUpImg.addEventListener("click", () => {
+        popUp = false;
+        popUpImg.remove();
+    });
+    // makes a home for the image to be placed
+    const rinkStuff = document.getElementById("rink");
+    if (rinkStuff) rinkStuff.appendChild(popUpImg);
 }
 
 function startGame() {
@@ -30,6 +57,12 @@ function startGame() {
     createPuck();
     createUser();
     createScore();
+
+    // timer sets flag and immediately displays popup
+    setInterval(() => {
+        popUp = true;
+        showPopUp();
+    }, 10_000);
 }
 function createRink() {
     const rink = document.createElement("div");
@@ -160,13 +193,18 @@ function draw() {
     collisions();
 
 
+
+
     window.requestAnimationFrame(draw);
 }
 function rinkMove(event) {
     const rink = document.getElementById("rink").getBoundingClientRect();
     // console.log(rink.x)
-    mouseX = event.clientX - rink.x
-    mouseY = event.clientY - rink.y
+    if (popUp == false) {
+        mouseX = event.clientX - rink.x
+        mouseY = event.clientY - rink.y
+    }
+
 }
 
 function collisions() { //https://youtu.be/_MyPLZSGS3s
