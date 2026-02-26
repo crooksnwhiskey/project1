@@ -4,8 +4,11 @@ body {
     height: 100vh;
     background-color: #419191;
     display: flex;
-    justify-content: center;
+    justify-content: center;    
     align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: x-large;
 }
 
 .title-screen {
@@ -15,11 +18,15 @@ body {
 #play-button {
     background-color: #ff6e2b;
     border: 5px solid;
-    border-color: #ff6e2b #ff9f6b #ff9f6b #ff6e2b;
+    border-color: #da5f26 #ff9f6b #ff9f6b #da5f26;
     padding: 10px 20px;
     font-family: 'Courier New', monospace;
     font-weight: bold;
+    font-size: large;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #play-button:active {
