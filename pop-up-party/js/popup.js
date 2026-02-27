@@ -159,7 +159,7 @@ function createUser() {
     user.style.width = '100px'
     user.style.height = '20px'
     user.style.backgroundColor = '#b30000'
-    user.style.borderRadius = "5%";
+    user.style.borderRadius = "10px";
     user.style.top = "350px";
     user.style.left = "150px";
     user.style.position = "absolute";
