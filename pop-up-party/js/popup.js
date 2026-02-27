@@ -235,10 +235,7 @@ function collisions() { //https://youtu.be/_MyPLZSGS3s
 function createScore() {
     scoreElement = document.createElement("div");
     scoreElement.id = "score";
-    scoreElement.style.position = "absolute";
-    scoreElement.style.top = "20px";
-    scoreElement.style.left = "20px";
-    scoreElement.innerText = "Score: 0";
+    scoreElement.innerText = "Score: " + score;
     const game = document.querySelector(".game-screen");
-    game.appendChild(scoreElement);
+    document.body.appendChild(scoreElement);
 }

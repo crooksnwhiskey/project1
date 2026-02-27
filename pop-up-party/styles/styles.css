@@ -45,3 +45,13 @@ body {
 #user {
     cursor: none;
 }
+
+#score {
+    position: absolute;
+    top: 25px;
+    left: 50px;
+    font-family: 'Courier New', monospace;
+    font-size: 75px;
+    color: white;
+    z-index: 1000;
+}
